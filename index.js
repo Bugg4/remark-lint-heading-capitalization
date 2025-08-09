@@ -13,13 +13,23 @@ export function fixTitle(title, options) {
       return word
     }
 
-    // If the word is not the first word in the title and should be lowercase, return it in lowercase.
+    // If true, words in options.lowerCaseWords can also apply to the first word in the title.
+    // Words in the default list will instead be capitalized by default if they are the first word, UNLESS they're explicitly included in the user's custom list
+    const allowFirstWordLowerCase = options.allowFirstWordLowerCase ?? false
+
+    // Words that should always be lowercase, (applies only to non-first words, unless allowFirstWordLowerCase is true)
+    const userLowerCaseWords = options.lowerCaseWords ?? []
+
     const lowerCaseWord = word.toLowerCase()
+    const allLowerCaseWords = [...lowerCaseWords, ...userLowerCaseWords]
+
+    // Only allow first word to be lowercase if it's in the user's custom list and allowFirstWordLowerCase is true.
     if (
-      index !== 0 &&
-      [...lowerCaseWords, ...(options.lowerCaseWords ?? [])].includes(
-        lowerCaseWord
-      )
+      allLowerCaseWords.includes(lowerCaseWord) &&
+      ((index === 0 &&
+        allowFirstWordLowerCase &&
+        userLowerCaseWords.includes(lowerCaseWord)) ||
+        index !== 0)
     ) {
       return lowerCaseWord
     }

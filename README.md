@@ -22,16 +22,25 @@ npm install remark-lint-heading-capitalization
 Use like any other [remark-lint](https://github.com/remarkjs/remark-lint) plugin.
 Check out the [remark-lint](https://github.com/remarkjs/remark-lint) documentation for details.
 
-### `Options`
+### Options
 
 Configuration (TypeScript type).
 
-###### Fields
-
 - `lowerCaseWords` (`string[]`, optional, example: `['die', 'der', 'und']`)
   — extends the default list of lowercase words.
+
 - `ignorePattern` (`string | string[]`, optional, example: `'package-[a-z]+'` or `['package-[a-z]+', 'node-[0-9]+']`)
   — a single regular expression pattern as a string or an array of strings, used to ignore items that match the specified pattern(s).
+
+- `allowFirstWordLowerCase` (`boolean`, default: `false`)
+
+  - `true`: Allows the first word of a heading to be lowercase, but **only** if that word is explicitly listed in your custom `lowerCaseWords` array.
+
+    Words from the default lowercase list (such as "a", "the", "and", etc.) will **not** be allowed as a lowercase first word unless you add them to your custom list.
+
+  - `false`: The first word is always capitalized unless it is already all uppercase.
+
+  With this configuration, a heading like `die besten Tricks` or `the quick brown fox` will not be flagged, but `an apple` will still be flagged unless `"an"` is added to `lowerCaseWords`.
 
 ## Examples
 
