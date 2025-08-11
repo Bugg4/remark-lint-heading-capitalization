@@ -1,7 +1,7 @@
 import { lintRule } from 'unified-lint-rule'
 import { visit } from 'unist-util-visit'
 
-import lowerCaseWords from './lib/lowerCaseWords.js'
+import defaultLowerCaseWords from './lib/defaultLowerCaseWords.js'
 import { capitalizeWord, isUpperCase } from './lib/utils.js'
 
 const cache = {}
@@ -20,8 +20,9 @@ export function fixTitle(title, options) {
     // Words that should always be lowercase, (applies only to non-first words, unless allowFirstWordLowerCase is true)
     const userLowerCaseWords = options.lowerCaseWords ?? []
 
+    const allLowerCaseWords = [...defaultLowerCaseWords, ...userLowerCaseWords]
+
     const lowerCaseWord = word.toLowerCase()
-    const allLowerCaseWords = [...lowerCaseWords, ...userLowerCaseWords]
 
     // Only allow first word to be lowercase if it's in the user's custom list and allowFirstWordLowerCase is true.
     if (
@@ -42,7 +43,7 @@ export function fixTitle(title, options) {
     return word
   })
 
-  // Putting correct title in the cache for prevent handling the same titles in other docs.
+  // Putting correct title in the cache to prevent handling the same titles in other docs.
   cache[correctTitle] = correctTitle
 
   return correctTitle
@@ -94,3 +95,4 @@ const remarkLintHeadingCapitalization = lintRule(
 )
 
 export default remarkLintHeadingCapitalization
+export { cache }
