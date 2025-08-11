@@ -12,7 +12,7 @@ const validMdPath = path.join(import.meta.dirname, 'docs', 'valid.md')
 const invalidMd = fs.readFileSync(invalidMdPath, 'utf-8')
 const validMd = fs.readFileSync(validMdPath, 'utf-8')
 
-test('find wrong capitalizations in headings', async () => {
+test('[no options] find wrong capitalizations in headings', async () => {
   const result = await remark()
     .use(remarkLintHeadingCapitalization)
     .process(invalidMd)
@@ -32,7 +32,7 @@ test('find wrong capitalizations in headings', async () => {
   )
 })
 
-test('no errors found', async () => {
+test('[no options] no errors found', async () => {
   const result = await remark()
     .use(remarkLintHeadingCapitalization)
     .process(validMd)
@@ -40,7 +40,7 @@ test('no errors found', async () => {
   assert.strictEqual(result.messages.length, 0)
 })
 
-test('custom list of lowercase words', async () => {
+test('[lowerCaseWords] custom list of lowercase words', async () => {
   const result1 = await remark()
     .use(remarkLintHeadingCapitalization, {
       lowerCaseWords: ['die', 'der', 'und']
@@ -50,7 +50,7 @@ test('custom list of lowercase words', async () => {
   assert.strictEqual(result1.messages.length, 0)
 })
 
-test('custom ignored pattern', async () => {
+test('[ignorePattern] custom ignored pattern', async () => {
   const result1 = await remark()
     .use(remarkLintHeadingCapitalization, {
       ignorePattern: ['`[^`]+`']
@@ -60,7 +60,7 @@ test('custom ignored pattern', async () => {
   assert.strictEqual(result1.messages.length, 0)
 })
 
-test('custom ignored pattern on multiple words', async () => {
+test('[ignorePattern] custom ignored pattern on multiple words', async () => {
   const result1 = await remark()
     .use(remarkLintHeadingCapitalization, {
       ignorePattern: ['`[^`]+`']
@@ -70,7 +70,7 @@ test('custom ignored pattern on multiple words', async () => {
   assert.strictEqual(result1.messages.length, 0)
 })
 
-test('custom ignored pattern with a string', async () => {
+test('[ignorePattern] custom ignored pattern with a string', async () => {
   const result1 = await remark()
     .use(remarkLintHeadingCapitalization, {
       ignorePattern: 'package-[a-z]+'
@@ -80,7 +80,7 @@ test('custom ignored pattern with a string', async () => {
   assert.strictEqual(result1.messages.length, 0)
 })
 
-test('custom multiple ignored patterns', async () => {
+test('[ignorePattern] custom multiple ignored patterns', async () => {
   const result1 = await remark()
     .use(remarkLintHeadingCapitalization, {
       ignorePattern: ['package-[a-z]+', '`[^`]+`']
