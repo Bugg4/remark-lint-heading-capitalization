@@ -91,3 +91,65 @@ test('custom multiple ignored patterns', async () => {
 
   assert.strictEqual(result1.messages.length, 0)
 })
+
+test('[allowFirstWordLowerCase] allow custom lowercase first word', async () => {
+  const result = await remark()
+    .use(remarkLintHeadingCapitalization, {
+      allowFirstWordLowerCase: true,
+      lowerCaseWords: ['cats', 'dogs', 'both']
+    })
+    .process('# cats or dogs or both')
+
+  assert.strictEqual(result.messages.length, 0)
+})
+
+test('[allowFirstWordLowerCase] allow custom lowercase first word when formatted', async () => {
+  const result = await remark()
+    .use(remarkLintHeadingCapitalization, {
+      allowFirstWordLowerCase: true,
+      lowerCaseWords: ['cats', 'are', 'great']
+    })
+    .process(
+      `# \`cats\` are great
+    ## _cats_ are great
+    ## __cats__ are great
+    ## *cats* are great
+    ## **cats** are great
+    ## ~~cats~~ are great`
+    )
+
+  assert.strictEqual(result.messages.length, 0)
+})
+
+test('[allowFirstWordLowerCase] capitalize first word when flag is true but no custom words specified', async () => {
+  const result = await remark()
+    .use(remarkLintHeadingCapitalization, {
+      allowFirstWordLowerCase: true,
+      lowerCaseWords: [] // No custom lowerCaseWords provided because we want to test default behavior
+    })
+    .process('# the quick brown fox')
+
+  assert.strictEqual(result.messages.length, 1)
+})
+
+test('[allowFirstWordLowerCase] do not capitalize default lower case word explicitly specified', async () => {
+  const result = await remark()
+    .use(remarkLintHeadingCapitalization, {
+      allowFirstWordLowerCase: true,
+      lowerCaseWords: ['the', 'fox'] // `The` is in the default list, but we want to test that it is not capitalized when explicitly included in the user's custom list
+    })
+    .process('# the Quick Brown fox')
+
+  assert.strictEqual(result.messages.length, 0)
+})
+
+test('[allowFirstWordLowerCase] option disabled, capitalize first word even if in list', async () => {
+  const result = await remark()
+    .use(remarkLintHeadingCapitalization, {
+      allowFirstWordLowerCase: false,
+      lowerCaseWords: ['the'] // No custom lowerCaseWords provided because we want to test default behavior
+    })
+    .process('# the quick brown fox')
+
+  assert.strictEqual(result.messages.length, 1)
+})
