@@ -158,9 +158,9 @@ test('[allowFirstWordLowerCase] option disabled, capitalize first word even if i
   const result = await remark()
     .use(remarkLintHeadingCapitalization, {
       allowFirstWordLowerCase: false,
-      lowerCaseWords: ['blah']
+      lowerCaseWords: ['the']
     })
-    .process('# blah Quick Brown Fox')
+    .process('# the Quick Brown Fox')
   assert.strictEqual(result.messages.length, 1)
 })
 
