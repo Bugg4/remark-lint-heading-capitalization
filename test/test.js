@@ -172,7 +172,6 @@ test('[cache] Add title to cache', async () => {
     })
     .process('# foo Bar Baz')
 
-  console.log(result)
   assert.strictEqual(result.messages.length, 0)
 })
 
@@ -220,8 +219,6 @@ ${same1}
   assert(keys.includes(duplicatedTitle))
   assert(keys.includes(otherTitle))
   assert.strictEqual(keys.length, 2)
-
-  console.log('1: ', cache)
 
   // Process again with different heading levels
   await remark().use(remarkLintHeadingCapitalization, {
