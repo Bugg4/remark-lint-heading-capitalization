@@ -149,7 +149,7 @@ test('[allowFirstWordLowerCase] option disabled, capitalize first word even if i
       allowFirstWordLowerCase: false,
       lowerCaseWords: ['the'] // No custom lowerCaseWords provided because we want to test default behavior
     })
-    .process('# the quick brown fox')
+    .process('# the Quick Brown Fox')
 
   assert.strictEqual(result.messages.length, 1)
 })
